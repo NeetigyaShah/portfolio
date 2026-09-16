@@ -551,7 +551,7 @@ html.js .rv.in{opacity:1;transform:none}
     var SPEED = 7.5, GSPEED = 5.2;
     function step(dt){
       if(over || paused) return;
-      var steppx = fx;
+      var steppx = fx, steppy = fy;
       if(dead > 0){
         dead -= dt * 60;
         if(dead <= 0){ dead = 0; resetPositions(); if(!over) setState(auto ? "ATTRACT · PRESS ARROWS" : "PLAYING"); }
@@ -605,7 +605,7 @@ html.js .rv.in{opacity:1;transform:none}
       fy = Math.max(0, Math.min(GH - 1, ty));
       var ncx = Math.round(fx), ncy = Math.round(fy);
       if(Math.abs(fx - ncx) < 0.2 && Math.abs(fy - ncy) < 0.2 && ncx >= 0 && ncx < GW){ px = ncx; py = ncy; }
-      if(auto && steppx === fx){ fx = Math.round(fx); fy = Math.round(fy); }
+      if(auto && steppx === fx && steppy === fy){ fx = Math.round(fx); fy = Math.round(fy); }
       for(var i = dots.length - 1; i >= 0; i--){
         if(dots[i][0] === px && dots[i][1] === py){ dots.splice(i, 1); score += 10; break; }
       }
