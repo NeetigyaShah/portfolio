@@ -1,0 +1,764 @@
+<!-- Direction B4: "Pac maze" — full Pac-Man theme on B3 skeleton. Midnight ground, cyan maze frames, ONE classic yellow Pac-Man rider + playable hero maze. Human-line project copy, digit-free About, local-only high score, static single file for Cloudflare Pages free tier. Lineage: [B3 dispatch yard skeleton] [grill session: plain copy, no-numbers about, rail rider, playable maze, attract mobile, local score] -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Neetigya Shah · Systems that ship</title>
+<meta name="description" content="Neetigya Shah builds AI systems that ship. Pac-Man themed portfolio: playable maze, scroll-eating rail, plain-English projects.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23070714'/%3E%3Cpath d='M16 16 L31 8 A15 15 0 1 0 31 24 Z' fill='%23ffe600'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070714; --bg2:#0b0b22; --panel:#101030; --paper:#f0edf7; --muted:#a49cd0;
+  --pac:#ffe600; --cyan:#42e8ff; --iris:#8b7cff; --mint:#4ade9e; --coral:#ff5d5d; --ink:#060614;
+  --line:rgba(240,237,247,.15); --radius:12px;
+}
+*{box-sizing:border-box}
+html{color-scheme:dark;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--paper);
+  font-family:"Outfit",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:17.5px;line-height:1.62;-webkit-font-smoothing:antialiased}
+::selection{background:var(--cyan);color:var(--ink)}
+::-webkit-scrollbar{width:11px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:#26264f;border-radius:6px;border:2px solid var(--bg)}
+::-webkit-scrollbar-thumb:hover{background:var(--cyan)}
+.skip{position:absolute;left:-999px;top:0;background:var(--cyan);color:var(--ink);padding:8px 12px;z-index:70}
+.skip:focus{left:0}
+#progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:65;background:transparent}
+#progress span{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--mint));transform:scaleX(0);transform-origin:left}
+.mast{max-width:1180px;margin:0 auto;padding:22px 28px 0}
+.mast-row{display:flex;align-items:baseline;gap:16px;font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13px;color:var(--muted)}
+.mast-row .name{color:var(--paper);font-weight:600;letter-spacing:.04em}
+.mast-row .mid{margin-left:auto;margin-right:auto}
+.sub{position:sticky;top:0;z-index:40;background:rgba(7,7,20,.94);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:16px}
+.sub-in{max-width:1180px;margin:0 auto;padding:0 28px;display:flex;gap:26px}
+.sub a{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:12.5px;letter-spacing:.1em;color:var(--muted);text-decoration:none;padding:13px 2px;border-bottom:2px solid transparent}
+.sub a:hover{color:var(--paper)}
+.sub a.act{color:var(--cyan);border-bottom-color:var(--cyan)}
+main{max-width:1180px;margin:0 auto;padding:0 28px 96px}
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:start;margin-top:56px}
+h1{font-family:"Bricolage Grotesque","Outfit",system-ui,sans-serif;font-weight:800;letter-spacing:-.025em;line-height:.94;font-size:clamp(3.2rem,8vw,6.8rem);margin:0 0 22px}
+.deck{font-size:19px;max-width:56ch;margin:0 0 8px}
+.byline{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13px;color:var(--muted);margin:0 0 24px}
+.cta{display:flex;gap:16px;align-items:baseline;margin:0 0 26px;flex-wrap:wrap}
+.cta .solid{background:var(--cyan);color:var(--ink);font-weight:700;padding:13px 22px;border-radius:8px;text-decoration:none;font-size:16px}
+.cta .solid:hover{background:#8df1ff}
+.cta .quiet{color:var(--paper);font-size:16px;text-underline-offset:4px}
+.cta .quiet:hover{color:var(--cyan)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0}
+.chips span{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:12.5px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:6px 12px;background:var(--bg2)}
+.chips b{color:var(--cyan);font-weight:600}
+.yard{border:1px solid rgba(66,232,255,.35);border-radius:var(--radius);background:var(--bg2);padding:20px;position:relative;overflow:hidden}
+.yard .tag{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:11px;letter-spacing:.12em;color:var(--muted);display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.yard .tag .live{color:var(--cyan)}
+.yard .score{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:12px;color:var(--paper);display:flex;justify-content:space-between;margin:0 0 10px}
+.yard .score b{color:var(--pac)}
+.yard .score .best{color:var(--muted)}
+#maze{width:100%;height:300px;display:block;border-radius:8px;background:#050512}
+.yard .keys{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:11.5px;color:var(--muted);margin:10px 0 0}
+.yard .cap{font-size:15px;color:var(--muted);margin:8px 0 0}
+.dots{margin:44px -28px 0;padding:0 28px;overflow:hidden}
+.dots .row-dots{display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:14px}
+.dots i{width:7px;height:7px;border-radius:50%;background:var(--pac);opacity:.7;flex:none}
+.dots-top .row-dots{max-width:1180px;margin:0 auto}
+h2{font-size:15px;font-weight:800;letter-spacing:.1em;margin:0 0 4px}
+h2 + p.k{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13px;color:var(--muted);margin:0 0 16px}
+.framed{position:relative}
+.framed::before,.framed::after{content:"";position:absolute;width:22px;height:22px;pointer-events:none;z-index:1}
+.framed::before{top:-2px;left:-2px;border-top:2px solid var(--cyan);border-left:2px solid var(--cyan);border-top-left-radius:10px}
+.framed::after{bottom:-2px;right:-2px;border-bottom:2px solid var(--cyan);border-right:2px solid var(--cyan);border-bottom-right-radius:10px}
+.pellets{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 4px}
+.pellets button{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13px;color:var(--paper);background:var(--bg2);border:1px solid var(--line);border-radius:999px;padding:9px 16px 9px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:9px}
+.pellets button i{width:10px;height:10px;border-radius:50%;background:var(--pac);flex:none}
+.pellets button:hover{border-color:var(--cyan)}
+.pellets button.on{border-color:var(--cyan);background:#0e2a33}
+.pellets button.eaten i{background:var(--bg2);border:1px solid var(--muted)}
+.cmd{margin:10px 0 6px;font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13px;color:var(--muted)}
+.cmd .p{color:var(--cyan)}
+.cmdline{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:10px;background:#050512;padding:14px 16px}
+.cmdline:focus-within{border-color:var(--cyan)}
+.cmdline .p{color:var(--cyan);font-family:"JetBrains Mono",ui-monospace,monospace}
+#filter{flex:1;background:none;border:0;color:var(--paper);font-family:"JetBrains Mono",ui-monospace,monospace;font-size:15px;outline:none;min-width:0;caret-color:var(--cyan)}
+#count{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:12.5px;color:var(--muted);margin:8px 0 0}
+kbd{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:11px;border:1px solid var(--line);border-radius:4px;padding:1px 6px;color:var(--muted)}
+.railtrack{position:relative}
+.index{list-style:none;margin:14px 0 0;padding:12px 0 0 30px;border-top:3px solid var(--paper);position:relative}
+.index::before{content:"";position:absolute;left:6px;top:12px;bottom:0;width:2px;background:rgba(240,237,247,.22);border-radius:2px}
+.index .fill{position:absolute;left:6px;top:12px;width:2px;height:0;background:linear-gradient(180deg,var(--cyan),var(--mint));border-radius:2px;z-index:1}
+.index li{position:relative;border-bottom:1px solid var(--line)}
+.index li .node{position:absolute;left:-31px;top:34px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--muted);z-index:2}
+.index li .pel{position:absolute;left:-28px;top:58px;width:6px;height:6px;border-radius:50%;background:var(--pac);z-index:2}
+.index li.eaten .pel{visibility:hidden}
+.index li.lit .node{border-color:var(--mint);background:var(--mint)}
+.index li.hide{display:none}
+.rider{position:absolute;left:-17px;top:0;z-index:3;transition:none;will-change:top}
+.rider .jaw{transform-origin:7px 13px;animation:chomp .28s ease-in-out infinite alternate}
+@keyframes chomp{from{transform:rotate(0deg)}to{transform:rotate(24deg)}}
+@media (prefers-reduced-motion:reduce){.rider .jaw{animation:none}}
+.row{display:grid;grid-template-columns:44px 104px 1fr auto;gap:18px;align-items:start;padding:22px 8px;text-decoration:none;color:var(--paper);border-radius:6px}
+.row:hover,.row:focus-visible{background:rgba(66,232,255,.07)}
+.index .n{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13px;color:var(--muted);padding-top:6px}
+.thumb{width:104px;height:104px;border-radius:10px;transition:transform .18s ease;flex:none}
+.row:hover .thumb{transform:scale(1.05)}
+.index .t{font-family:"Bricolage Grotesque","Outfit",system-ui,sans-serif;font-weight:800;font-size:clamp(1.5rem,2.6vw,2rem);letter-spacing:-.01em;line-height:1.1;color:var(--paper);text-decoration:none}
+a.t:hover{color:var(--cyan)}
+.index .t .arrow{display:inline-block;transition:transform .15s ease;color:var(--cyan)}
+.row:hover .arrow{transform:translateX(6px)}
+.index .human{font-size:17.5px;color:var(--paper);margin:8px 0 0;max-width:56ch}
+.index .tech{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:12.5px;color:var(--muted);margin:8px 0 0}
+.index .tech b{color:var(--cyan);font-weight:600}
+.livedot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--coral);margin-right:6px}
+.index .go{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13px;color:var(--cyan);white-space:nowrap;text-decoration:none;padding-top:6px}
+.trace{border:1px solid var(--line);border-radius:var(--radius);box-shadow:inset 0 2px 0 var(--cyan);padding:24px;position:sticky;top:64px;background:var(--bg2)}
+.trace h3{margin:0 0 6px;font-family:"Bricolage Grotesque","Outfit",system-ui,sans-serif;font-size:22px;font-weight:800}
+.trace .sk{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:12.5px;color:var(--muted);margin:0 0 16px}
+.trace ol{list-style:none;margin:0;padding:0;font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13px;display:grid;min-height:150px}
+.trace li{padding:9px 0;border-top:1px dashed rgba(240,237,247,.2);color:var(--paper)}
+.trace li span.k{color:var(--cyan)}
+.trace .cur::after{content:"▍";color:var(--cyan);animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.trace .out{margin-top:16px;font-size:14px;border-top:1px solid var(--line);padding-top:12px}
+.trace .out b{color:var(--cyan)}
+.trace.armed .out{opacity:0}
+.trace.done .out{opacity:1;transition:opacity .5s ease}
+.tickets{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:72px 0 0}
+.tickets .tk{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:26px 24px 28px;position:relative;overflow:hidden;transition:transform .18s ease,border-color .18s ease}
+.tickets .tk::before{content:"";position:absolute;left:24px;right:24px;top:0;height:2px;background:linear-gradient(90deg,var(--cyan),var(--mint))}
+.tickets .tk:hover{transform:translateY(-4px);border-color:rgba(66,232,255,.55)}
+.tickets .num{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:12px;letter-spacing:.1em;color:var(--cyan)}
+.tickets h3{margin:8px 0 10px;font-family:"Bricolage Grotesque","Outfit",system-ui,sans-serif;font-size:27px;font-weight:800;letter-spacing:-.01em}
+.tickets p{margin:0 0 14px;font-size:15.5px;color:var(--muted);max-width:40ch}
+.tickets .proof{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:12px;color:var(--paper);border-top:1px dashed rgba(240,237,247,.25);padding-top:12px;margin:0}
+.tickets .proof b{color:var(--cyan)}
+.more{margin:56px 0 0}
+.more ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:0 40px;border-top:1px solid var(--line)}
+.more li{display:flex;gap:12px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--line);font-size:15px}
+.more li a{color:var(--paper);font-weight:700;text-decoration:none;white-space:nowrap}
+.more li a:hover{color:var(--cyan)}
+.more li span{color:var(--muted);font-size:14px}
+.more li span a{font-weight:400;color:var(--cyan)}
+.about{display:grid;grid-template-columns:1.2fr 1fr;gap:48px;margin:72px 0 0;border-top:3px solid var(--paper);padding-top:24px}
+.about p{margin:0 0 16px;max-width:62ch;font-size:18px}
+.facts{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13.5px;color:var(--muted);display:grid;gap:12px;align-content:start}
+.facts b{color:var(--paper)}
+.contact{margin:72px 0 0;border-radius:var(--radius);padding:48px 40px;background:var(--cyan);color:var(--ink);position:relative;overflow:hidden}
+.contact .term{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:12.5px;letter-spacing:.1em;margin:0 0 12px;color:#06333d}
+.contact h2{font-family:"Bricolage Grotesque","Outfit",system-ui,sans-serif;font-size:clamp(2.1rem,4vw,3.2rem);letter-spacing:-.02em;font-weight:800;margin:0 0 10px;max-width:20ch;color:var(--ink)}
+.contact p{margin:0 0 24px;max-width:56ch;font-size:16px;color:#0a2e36}
+.contact a.mail{background:var(--ink);color:var(--cyan);font-weight:700;padding:14px 24px;border-radius:8px;text-decoration:none;display:inline-block;font-size:16px}
+.contact a.mail:hover{background:#000}
+.contact .route{margin:26px 0 0;font-family:"JetBrains Mono",ui-monospace,monospace;font-size:12.5px;color:#06333d}
+footer{margin:48px 0 0;color:var(--muted);font-family:"JetBrains Mono",ui-monospace,monospace;font-size:12.5px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer a{color:var(--muted)}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+.rv{opacity:1}
+html.js .rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s cubic-bezier(.16,1,.3,1);transition-delay:var(--d,0s)}
+html.js .rv.in{opacity:1;transform:none}
+@media (max-width:980px){
+  .hero{grid-template-columns:1fr}
+  .cols,.about{grid-template-columns:1fr}
+  .trace{position:static}
+  .tickets{grid-template-columns:1fr}
+  .more ul{grid-template-columns:1fr}
+  .mast-row .mid{display:none}
+  main,.mast,.sub-in{padding-left:18px;padding-right:18px}
+  .dots{margin-left:-18px;margin-right:-18px;padding-left:18px;padding-right:18px}
+  .row{grid-template-columns:34px 1fr;gap:10px}
+  .row .thumb,.row .go{display:none}
+  .rider{display:none}
+  .index{padding-left:24px}
+  .index li .node{left:-32px;top:30px}
+  .index li .pel{left:-29px}
+  #maze{height:230px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  h1 .ln{animation:none;transform:none}
+  .trace .cur::after{animation:none}
+  html.js .rv{opacity:1;transform:none;transition:none}
+  .row:hover .thumb,.tickets .tk:hover{transform:none}
+  .arrow{transition:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#index">Skip to project index</a>
+<div id="progress" aria-hidden="true"><span id="bar"></span></div>
+<div class="mast"><div class="mast-row"><span class="name">NEETIGYA SHAH</span><span class="mid">Portfolio · arcade edition</span><span>Bathinda, India · remote</span></div></div>
+<nav class="sub" aria-label="Sections"><div class="sub-in">
+  <a href="#index" data-spy="index" class="act">INDEX</a><a href="#method" data-spy="method">METHOD</a><a href="#about" data-spy="about">ABOUT</a><a href="#contact" data-spy="contact">CONTACT</a>
+</div></nav>
+<main>
+  <div class="hero">
+    <div>
+      <h1><span class="mask"><span class="ln">Hungry work</span></span><span class="mask"><span class="ln">that <span class="eat">ships.</span></span></span></h1>
+      <p class="deck"><b>Neetigya Shah.</b> I build AI helpers that do real jobs: read messy mail, answer questions from your own documents, and keep watch while you sleep. Everything below links to code or a working demo.</p>
+      <p class="byline">Computer science graduate · built AI systems on a live internship · best on desktop, playable below</p>
+      <div class="cta"><a class="solid" href="#index">Read the index</a><a class="quiet" href="https://github.com/NeetigyaShah" target="_blank" rel="noopener">GitHub profile</a></div>
+      <p class="chips" aria-label="Proof strip"><span><b>loved</b> by strangers who starred it</span><span><b>tested</b> before it ships</span><span><b>live</b> demos you can click</span><span><b>traced</b> so you see the proof</span></p>
+    </div>
+    <div class="yard framed" aria-label="Playable maze">
+      <div class="tag"><span>MAZE · PLAY IT</span><span class="live" id="mazestate">ATTRACT · PRESS ARROWS</span></div>
+      <p class="score"><span>score <b id="score">0</b> · lives <b id="lives">●●●</b></span><span class="best">best on this device <b id="best">0</b></span></p>
+      <canvas id="maze" aria-label="Playable Pac-Man style maze. Use arrow keys. Press P to pause."></canvas>
+      <p class="keys">Pac plays on his own until you take over · arrows or WASD to steer · <b>P</b> pauses · swipe on touch · small dots score, big dots turn the hunt around · once you are playing you get three lives</p>
+      <p class="cap" id="mazecap">Take over any time. Scroll on: the eating continues down the page.</p>
+    </div>
+  </div>
+  <div class="dots dots-top" aria-hidden="true"><div class="row-dots" id="topdots"></div></div>
+  <div class="cols">
+    <section id="index" aria-label="Project index">
+      <h2>THE INDEX</h2>
+      <p class="k">Six builds, newest first. Chomp a pellet or type to narrow.</p>
+      <div class="pellets" id="pellets" aria-label="Filter by topic">
+        <button data-q="rag"><i></i>rag</button>
+        <button data-q="mcp"><i></i>mcp</button>
+        <button data-q="docs"><i></i>docs</button>
+        <button data-q="triage"><i></i>triage</button>
+      </div>
+      <p class="cmd"><span class="p">$</span> run --filter <span id="echo">_</span> &nbsp;·&nbsp; press <kbd>/</kbd> to filter</p>
+      <div class="cmdline"><span class="p" aria-hidden="true">$</span><input id="filter" type="text" placeholder="try rag, mcp, docs, triage" autocomplete="off" spellcheck="false" aria-label="Filter projects by keyword"></div>
+      <p id="count" role="status">showing everything</p>
+      <div class="railtrack framed" id="railtrack" style="padding:18px 14px 18px 18px;margin-top:14px">
+      <span class="rider" id="rider" aria-hidden="true"><svg width="30" height="26" viewBox="0 0 30 26"><path d="M15 13 L29 5 A13 13 0 1 0 29 21 Z" fill="#ffe600"/><path class="jaw" d="M15 13 L29 5 A13 13 0 0 1 29 21 Z" fill="#e6cf00"/><circle cx="15" cy="8" r="2" fill="#070714"/></svg></span>
+      <ol class="index" id="list"><span class="fill" id="railfill" aria-hidden="true"></span>
+        <li class="rv" data-k="research homework interview report"><span class="node"></span><span class="pel"></span><div class="row"><span class="n">01</span><svg class="thumb" viewBox="0 0 104 104" aria-hidden="true"><rect width="104" height="104" rx="14" fill="#101030"/><circle cx="52" cy="52" r="34" fill="none" stroke="#8b7cff" stroke-width="2" opacity=".8"/><circle cx="52" cy="52" r="23" fill="none" stroke="#8b7cff" stroke-width="1.5" opacity=".55"/><circle cx="52" cy="52" r="12" fill="none" stroke="#42e8ff" stroke-width="1.5" opacity=".8"/><line x1="52" y1="52" x2="80" y2="28" stroke="#4ade9e" stroke-width="2"/><circle cx="80" cy="28" r="4" fill="#ff5d5d"/><circle cx="52" cy="52" r="4" fill="#f0edf7"/></svg><div><a class="t" href="https://github.com/NeetigyaShah/deep-research" target="_blank" rel="noopener">deep-research <span class="arrow">→</span></a><p class="human">Give it any topic and it hands you a finished report. First it asks what you actually want, then it reads across the web until every question is answered.</p><p class="tech">python · interviews first · keeps asking without re-reading</p></div><a class="go" href="https://github.com/NeetigyaShah/deep-research" target="_blank" rel="noopener">code</a></div></li>
+        <li class="rv" style="--d:.06s" data-k="rag answers documents questions"><span class="node"></span><span class="pel"></span><div class="row"><span class="n">02</span><svg class="thumb" viewBox="0 0 104 104" aria-hidden="true"><rect width="104" height="104" rx="14" fill="#101030"/><polyline points="22,40 52,28 82,40" fill="none" stroke="#4ade9e" stroke-width="3"/><polyline points="22,55 52,43 82,55" fill="none" stroke="#42e8ff" stroke-width="3" opacity=".75"/><polyline points="22,70 52,58 82,70" fill="none" stroke="#8b7cff" stroke-width="3" opacity=".6"/><circle cx="52" cy="84" r="4" fill="#ff5d5d"/></svg><div><a class="t" href="https://github.com/NeetigyaShah/proRag" target="_blank" rel="noopener">proRag <span class="arrow">→</span></a><p class="human">Ask questions over your own documents and get answers with the exact page shown. Runs on your own server, and bosses can cap who spends what.</p><p class="tech">your server · shows its sources · per-person spending caps</p></div><a class="go" href="https://github.com/NeetigyaShah/proRag" target="_blank" rel="noopener">code</a></div></li>
+        <li class="rv" style="--d:.12s" data-k="mcp collectors repeat checks"><span class="node"></span><span class="pel"></span><div class="row"><span class="n">03</span><svg class="thumb" viewBox="0 0 104 104" aria-hidden="true"><rect width="104" height="104" rx="14" fill="#101030"/><rect x="20" y="22" width="24" height="24" rx="5" fill="none" stroke="#8b7cff" stroke-width="2.5"/><rect x="60" y="22" width="24" height="24" rx="5" fill="none" stroke="#42e8ff" stroke-width="2.5"/><rect x="20" y="58" width="24" height="24" rx="5" fill="none" stroke="#4ade9e" stroke-width="2.5"/><path d="M60 70 H74 L66 62 M74 70 L66 78" fill="none" stroke="#ff5d5d" stroke-width="2.5"/></svg><div><a class="t" href="https://github.com/NeetigyaShah/APImeMCP" target="_blank" rel="noopener">APImeMCP <span class="arrow">→</span></a><p class="human">Teach it once how a website is shaped, and it keeps collecting from it on a schedule. Same shape every time, with a dashboard to watch it work.</p><p class="tech">write once · reruns itself · dashboard plus alerts</p></div><a class="go" href="https://github.com/NeetigyaShah/APImeMCP" target="_blank" rel="noopener">code</a></div></li>
+        <li class="rv" data-k="docs writing fixer reviews"><span class="node"></span><span class="pel"></span><div class="row"><span class="n">04</span><svg class="thumb" viewBox="0 0 104 104" aria-hidden="true"><rect width="104" height="104" rx="14" fill="#101030"/><path d="M52 18 L78 30 V52 C78 68 66 80 52 86 C38 80 26 68 26 52 V30 Z" fill="none" stroke="#4ade9e" stroke-width="2.5"/><path d="M43 52 L50 59 L63 44" fill="none" stroke="#42e8ff" stroke-width="3"/><line x1="38" y1="74" x2="66" y2="74" stroke="#8b7cff" stroke-width="2" opacity=".7"/></svg><div><a class="t" href="https://github.com/NeetigyaShah/docguard" target="_blank" rel="noopener">DocGuard <span class="arrow">→</span></a><p class="human">Catches your guides going stale the moment code changes, and fixes them inside the pull request. Only confident fixes go through on their own. <a href="https://dashboard-sigma-two-78.vercel.app" target="_blank" rel="noopener">Live dashboard</a>.</p><p class="tech">reads real code structure · double checked · unsure fixes ask first</p></div><a class="go" href="https://github.com/NeetigyaShah/docguard" target="_blank" rel="noopener">code</a></div></li>
+        <li class="rv" data-k="triage fraud money review"><span class="node"></span><span class="pel"></span><div class="row"><span class="n">05</span><svg class="thumb" viewBox="0 0 104 104" aria-hidden="true"><rect width="104" height="104" rx="14" fill="#101030"/><polyline points="18,68 36,46 52,56 68,32 86,40" fill="none" stroke="#8b7cff" stroke-width="2"/><circle cx="36" cy="46" r="4" fill="#42e8ff"/><circle cx="52" cy="56" r="4" fill="#42e8ff"/><circle cx="68" cy="32" r="5" fill="#ff5d5d"/><circle cx="18" cy="68" r="4" fill="#4ade9e"/><circle cx="86" cy="40" r="4" fill="#4ade9e"/></svg><div><a class="t" href="https://github.com/NeetigyaShah/frisk-risk-signal-aggregator" target="_blank" rel="noopener">FRISK <span class="arrow">→</span></a><p class="human">Reads a customer file like a careful investigator and shows every step it took. Anything shaky goes to a human with the receipts attached. <a href="https://frisk-2sxd.onrender.com" target="_blank" rel="noopener">Live demo</a>.</p><p class="tech">shows its work · humans decide the close calls · replayable</p></div><a class="go" href="https://github.com/NeetigyaShah/frisk-risk-signal-aggregator" target="_blank" rel="noopener">code</a></div></li>
+        <li class="rv" data-k="design taste check"><span class="node"></span><span class="pel"></span><div class="row"><span class="n">06</span><svg class="thumb" viewBox="0 0 104 104" aria-hidden="true"><rect width="104" height="104" rx="14" fill="#101030"/><path d="M18 52 C32 36 46 30 52 30 C58 30 72 36 86 52 C72 68 58 74 52 74 C46 74 32 68 18 52 Z" fill="none" stroke="#42e8ff" stroke-width="2.5"/><circle cx="52" cy="52" r="11" fill="none" stroke="#8b7cff" stroke-width="2.5"/><circle cx="52" cy="52" r="4" fill="#4ade9e"/><line x1="52" y1="16" x2="52" y2="24" stroke="#ff5d5d" stroke-width="2"/><line x1="28" y1="24" x2="33" y2="30" stroke="#ff5d5d" stroke-width="2"/><line x1="76" y1="24" x2="71" y2="30" stroke="#ff5d5d" stroke-width="2"/></svg><div><a class="t" href="https://github.com/NeetigyaShah/UI-Filosphy" target="_blank" rel="noopener">UI-Filosphy <span class="arrow">→</span></a><p class="human">A taste checklist for web pages that can look at its own work. It grills the idea, borrows from good examples, then checks the result in a real browser. This page was rebuilt with it.</p><p class="tech">asks hard questions first · learns from examples · self checks</p></div><a class="go" href="https://github.com/NeetigyaShah/UI-Filosphy" target="_blank" rel="noopener">code</a></div></li>
+      </ol>
+      </div>
+      <section class="more rv" aria-label="Also shipped">
+        <h2>ALSO SHIPPED</h2>
+        <p class="k">More proof that did not make the front page.</p>
+        <ul>
+          <li><a href="https://github.com/NeetigyaShah/AIEmailAgent" target="_blank" rel="noopener">AIEmailAgent</a><span>Sorts support mail for you · <a href="https://neetigyashahaiemailagent.streamlit.app/" target="_blank" rel="noopener">live</a></span></li>
+          <li><a href="https://github.com/NeetigyaShah/pulse-metrics" target="_blank" rel="noopener">pulse-metrics</a><span>Live charts with a calm backup when the AI naps</span></li>
+          <li><a href="https://github.com/NeetigyaShah/Viewer" target="_blank" rel="noopener">Viewer</a><span>Reads agent logs nicely in your terminal</span></li>
+          <li><a href="https://github.com/NeetigyaShah/Colllab-ide" target="_blank" rel="noopener">Collab IDE</a><span>Write code together, live · <a href="https://colllab-ide.vercel.app" target="_blank" rel="noopener">live</a></span></li>
+        </ul>
+      </section>
+    </section>
+    <aside class="trace rv" id="tracebox" aria-label="How the work reads">
+      <h3>A trace, not a claim</h3>
+      <p class="sk">FRISK reading one customer file. Watch it show its work, line by line.</p>
+      <ol id="tracelist">
+        <li><span class="k">01</span> · <span class="tx">gathered the clues from every corner</span></li>
+        <li><span class="k">02</span> · <span class="tx">three checkers agreed: needs a human look</span></li>
+        <li><span class="k">03</span> · <span class="tx">remembered a similar file that turned out fine</span></li>
+        <li><span class="k">04</span> · <span class="tx">score fell short, so it asked a person instead</span></li>
+      </ol>
+      <p class="out">Sent to <b>a human</b> with the receipts. Close calls always go to people, never to the machine alone.</p>
+    </aside>
+  </div>
+  <section class="tickets rv framed" id="method" aria-label="Method">
+    <div class="tk"><span class="num">STEP 01</span><h3>Sketch the map</h3><p>Before anything gets built, we agree what good looks like and what is out of scope. No demos of the wrong thing.</p><p class="proof">proof · <b>deep-research</b> interviews you before it reads a thing</p></div>
+    <div class="tk"><span class="num">STEP 02</span><h3>Build in slices</h3><p>Big scary work becomes small pieces you can finish and test one by one. Each slice works before the next begins.</p><p class="proof">proof · <b>DocGuard</b> checks its own fixes independently</p></div>
+    <div class="tk"><span class="num">STEP 03</span><h3>Let proof decide</h3><p>Only confident results go out alone. Anything shaky asks a human first. Boring on purpose, safe by default.</p><p class="proof">proof · <b>FRISK</b> sends close calls to people</p></div>
+  </section>
+  <section class="about rv" id="about" aria-label="About">
+    <div>
+      <h2>ABOUT</h2>
+      <p class="k">The short version.</p>
+      <p>I have followed language models for years, and I have tinkered with APIs since they first opened up. My golden rule is simple. Break any hard problem into small slices I can complete and test, then run long focused loops until each slice works.</p>
+      <p>My long term dream is to ship a product I feel proud telling people I made, and to grow into an engineer who can take on any problem. I am not perfect and I have a lot to learn, but I bring fresh ideas and real hunger to every team I join.</p>
+    </div>
+    <div class="facts"><span><b>Based</b> · Bathinda, India · open to remote</span><span><b>Studied</b> · computer science, graduated</span><span><b>Built</b> · AI systems on a live internship</span><span><b>Contact</b> · <a href="mailto:neetigyashah@gmail.com" style="color:var(--cyan)">neetigyashah@gmail.com</a></span></div>
+  </section>
+  <section class="contact rv framed" id="contact" aria-label="Contact">
+    <p class="term">GAME CLEAR · THANKS FOR PLAYING</p>
+    <h2>Have a job that needs doing? Let us talk.</h2>
+    <p>One email is enough: what you need, what is hard about it, when you need it. I reply with a plan, not a pitch.</p>
+    <a class="mail" href="mailto:neetigyashah@gmail.com">neetigyashah@gmail.com</a>
+    <p class="route">Six stops · more proof below · thanks for scrolling</p>
+  </section>
+  <footer><span>Neetigya Shah · arcade edition</span><span><a href="https://github.com/NeetigyaShah">GitHub</a> · <a href="https://www.linkedin.com/in/neetigya-shah">LinkedIn</a></span></footer>
+</main>
+<script>
+(function(){
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  document.documentElement.classList.add("js");
+  var bar = document.getElementById("bar");
+  var track = document.getElementById("railtrack");
+  var fill = document.getElementById("railfill");
+  var rider = document.getElementById("rider");
+  var list = document.getElementById("list");
+  var rows = list ? Array.prototype.slice.call(list.querySelectorAll("li")) : [];
+  var rideY = 8, rideTarget = 8, rideFace = 0, rideFaceT = 0, rideAngle = 0;
+  function riderXY(rect, vh){
+    var top, face = 0;
+    if(rect.top >= vh * 0.52){ top = 8; face = 0; }
+    else if(rect.bottom <= vh * 0.52){ top = rect.height - 34; face = 0; }
+    else{ top = vh * 0.52 - rect.top - 15; face = 90; }
+    return [Math.max(4, Math.min(top, Math.max(4, rect.height - 34))), face];
+  }
+  function rideFrame(){
+    if(!rider) return;
+    rideY += (rideTarget - rideY) * 0.14;
+    if(Math.abs(rideTarget - rideY) < 0.4) rideY = rideTarget;
+    rideFace += (rideFaceT - rideFace) * 0.12;
+    var moving = Math.abs(rideTarget - rideY) > 1.5;
+    rideAngle = rideFace + (moving ? Math.sin(performance.now() / 90) * 10 : 0);
+    rider.style.top = rideY.toFixed(1) + "px";
+    rider.style.transform = "rotate(" + rideAngle.toFixed(1) + "deg)";
+    requestAnimationFrame(rideFrame);
+  }
+  if(!reduce) requestAnimationFrame(rideFrame);
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - window.innerHeight;
+    var p = max > 0 ? (window.scrollY / max) : 0;
+    if(bar) bar.style.transform = "scaleX(" + p.toFixed(4) + ")";
+    if(track && fill && list){
+      var r = track.getBoundingClientRect();
+      var vh = window.innerHeight || 800;
+      var q = (vh * 0.55 - r.top) / (r.height || 1);
+      q = Math.max(0, Math.min(1, q));
+      fill.style.height = "calc(" + (q * 100).toFixed(2) + "% - 12px)";
+      if(rider){
+        var pos = riderXY(r, vh);
+        rideTarget = pos[0];
+        rideFaceT = pos[1];
+        if(reduce){ rider.style.top = pos[0] + "px"; rider.style.transform = "rotate(" + pos[1] + "deg)"; }
+      }
+      var eaten = 0;
+      for(var i = 0; i < rows.length; i++){
+        var rr = rows[i].getBoundingClientRect();
+        if(rr.top < vh * 0.6){ rows[i].classList.add("lit"); }
+        else{ rows[i].classList.remove("lit"); }
+        if(rr.top < vh * 0.52){ rows[i].classList.add("eaten"); eaten++; }
+        else{ rows[i].classList.remove("eaten"); }
+      }
+      var dots = document.querySelectorAll("#topdots i");
+      for(var d = 0; d < dots.length; d++){ dots[d].style.opacity = d < eaten * 2 ? "0.12" : "0.7"; }
+    }
+  }
+  var ticking = false;
+  window.addEventListener("scroll", function(){
+    if(!ticking){ ticking = true; requestAnimationFrame(function(){ onScroll(); ticking = false; }); }
+  }, {passive:true});
+  window.addEventListener("resize", onScroll);
+  onScroll();
+  var rv = Array.prototype.slice.call(document.querySelectorAll(".rv"));
+  if(reduce || !("IntersectionObserver" in window)){ rv.forEach(function(el){ el.classList.add("in"); }); }
+  else{
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } });
+    }, {threshold:.12});
+    rv.forEach(function(el){ io.observe(el); });
+  }
+  var links = Array.prototype.slice.call(document.querySelectorAll("[data-spy]"));
+  var map = {};
+  links.forEach(function(a){ map[a.getAttribute("data-spy")] = a; });
+  var secs = ["index","method","about","contact"].map(function(id){ return document.getElementById(id); }).filter(Boolean);
+  if("IntersectionObserver" in window){
+    var spy = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.remove("act"); });
+          var a = map[e.target.id];
+          if(a) a.classList.add("act");
+        }
+      });
+    }, {rootMargin:"-40% 0px -55% 0px"});
+    secs.forEach(function(s){ spy.observe(s); });
+  }
+  var input = document.getElementById("filter"),
+      count = document.getElementById("count"),
+      echo = document.getElementById("echo"),
+      pels = Array.prototype.slice.call(document.querySelectorAll("#pellets button"));
+  function items(){ return Array.prototype.slice.call(document.querySelectorAll("#list li")); }
+  function apply(){
+    var q = input.value.trim().toLowerCase(), n = 0;
+    items().forEach(function(li){
+      var hit = !q || li.getAttribute("data-k").indexOf(q) !== -1 || li.textContent.toLowerCase().indexOf(q) !== -1;
+      li.classList.toggle("hide", !hit); if(hit) n++;
+    });
+    count.textContent = !q ? "showing everything" : (n + (n === 1 ? " match" : " matches") + ' for "' + input.value.trim() + '"');
+    if(echo) echo.textContent = q ? input.value.trim() : "_";
+    pels.forEach(function(b){ b.classList.toggle("on", !!q && b.getAttribute("data-q") === q); });
+    onScroll();
+  }
+  input.addEventListener("input", apply); apply(); input.value = ""; apply();
+  document.addEventListener("keydown", function(e){
+    if(e.key === "/" && document.activeElement !== input){ e.preventDefault(); input.focus(); }
+    if(e.key === "Escape" && document.activeElement === input){ input.value = ""; apply(); input.blur(); }
+  });
+  pels.forEach(function(b){
+    b.addEventListener("click", function(){
+      var q = b.getAttribute("data-q");
+      b.classList.add("eaten");
+      setTimeout(function(){
+        input.value = (input.value.trim().toLowerCase() === q) ? "" : q;
+        apply();
+        setTimeout(function(){ b.classList.remove("eaten"); }, 600);
+      }, 180);
+    });
+  });
+  var box = document.getElementById("tracebox");
+  var cells = Array.prototype.slice.call(document.querySelectorAll("#tracelist .tx"));
+  var full = cells.map(function(c){ return c.textContent; });
+  var typed = false;
+  function typeTrace(){
+    if(typed) return; typed = true;
+    box.classList.add("done");
+    if(reduce || !("IntersectionObserver" in window)) return;
+    box.classList.add("armed");
+    var li = 0;
+    function nextLine(){
+      if(li >= cells.length){ box.classList.remove("armed"); box.classList.add("done"); return; }
+      var c = cells[li], text = full[li], ch = 0;
+      c.textContent = "";
+      c.parentElement.classList.add("cur");
+      var timer = setInterval(function(){
+        ch++;
+        c.textContent = text.slice(0, ch);
+        if(ch >= text.length){ clearInterval(timer); c.parentElement.classList.remove("cur"); li++; setTimeout(nextLine, 220); }
+      }, 22);
+    }
+    box.classList.remove("done");
+    nextLine();
+  }
+  if("IntersectionObserver" in window && !reduce){
+    var tio = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ typeTrace(); tio.disconnect(); } });
+    }, {threshold:.3});
+    tio.observe(box);
+  }
+  var dotsBox = document.getElementById("topdots");
+  if(dotsBox){ var s = ""; for(var di = 0; di < 24; di++){ s += "<i></i>"; } dotsBox.innerHTML = s; }
+  var MC = document.getElementById("maze");
+  if(MC){
+    var g = MC.getContext("2d"), MW = 0, MH = 0;
+    var touch = ("ontouchstart" in window) || (navigator.maxTouchPoints > 0);
+    function msize(){
+      var d = Math.min(1.5, window.devicePixelRatio || 1), r = MC.getBoundingClientRect();
+      MW = r.width; MH = r.height;
+      MC.width = Math.max(1, MW * d); MC.height = Math.max(1, MH * d);
+      g.setTransform(d, 0, 0, d, 0, 0);
+    }
+    msize(); window.addEventListener("resize", msize);
+    var GRID = [
+      "###################",
+      "#........#........#",
+      "#o##.###.#.###.##o#",
+      "T.................T",
+      "#.##.#.#####.#.##.#",
+      "#....#...#...#....#",
+      "####.###.#.###.####",
+      "####.#.......#.####",
+      "####.#.##-##.#.####",
+      "#......#GGG#......#",
+      "####.#.#####.#.####",
+      "####.#.......#.####",
+      "####.#.#####.#.####",
+      "#........#........#",
+      "#o##.###.#.###.##o#",
+      "#..#.....P.....#..#",
+      "##.#.#.#####.#.#.##",
+      "#....#...#...#....#",
+      "#.######.#.######.#",
+      "#.................#",
+      "###################"
+    ];
+    var GH = GRID.length, GW = GRID[0].length;
+    var dots = [], big = [], gx = [], gy = [], gdir = [];
+    var px = 0, py = 0, fx = 0, fy = 0;
+    var home = {px:0, py:0, gx:[], gy:[]};
+    function scan(){
+      dots = []; big = []; gx = []; gy = []; gdir = [];
+      for(var y = 0; y < GH; y++) for(var x = 0; x < GW; x++){
+        var c = GRID[y][x];
+        if(c === "." || c === "T") dots.push([x, y]);
+        else if(c === "o") big.push([x, y]);
+        else if(c === "P"){ px = x; py = y; fx = x; fy = y; home.px = x; home.py = y; }
+        else if(c === "G"){ gx.push(x); gy.push(y); gdir.push([1, 0]); home.gx.push(x); home.gy.push(y); }
+      }
+    }
+    scan();
+    var score = 0, best = 0, mouth = 0, lives = 3, fright = 0, over = false, paused = false, dead = 0;
+    try{ best = parseInt(window.localStorage.getItem("pacmaze-best") || "0", 10) || 0; }catch(e){ best = 0; }
+    var scoreEl = document.getElementById("score"), bestEl = document.getElementById("best"), stateEl = document.getElementById("mazestate"), livesEl = document.getElementById("lives");
+    function paintScore(){
+      if(scoreEl) scoreEl.textContent = score;
+      if(bestEl) bestEl.textContent = Math.max(best, auto ? best : score);
+      if(livesEl) livesEl.textContent = lives > 0 ? "●●●".slice(0, lives) + "○○○".slice(0, 3 - lives) : "○○○";
+      if(!auto && score > best){
+        best = score;
+        try{ window.localStorage.setItem("pacmaze-best", String(best)); }catch(e){}
+      }
+    }
+    paintScore();
+    var dir = [-1, 0], want = [-1, 0], auto = true;
+    function cell(x, y){ if(y < 0 || y >= GH) return "#"; if(x < 0 || x >= GW) return " "; return GRID[y][x]; }
+    function can(x, y){ var c = cell(x, y); return c !== "#" && c !== "-"; }
+    function gcan(x, y){ return cell(x, y) !== "#"; }
+    function center(x, y, cw, chh){ return [x * cw + cw / 2, y * chh + chh / 2]; }
+    function dotAt(x, y){ for(var i = 0; i < dots.length; i++){ if(dots[i][0] === x && dots[i][1] === y) return true; } return false; }
+    function bigAt(x, y){ for(var i = 0; i < big.length; i++){ if(big[i][0] === x && big[i][1] === y) return true; } return false; }
+    function setState(t){ if(stateEl) stateEl.textContent = t; }
+    function resetPositions(){
+      px = home.px; py = home.py; fx = px; fy = py;
+      for(var m = 0; m < gx.length; m++){ gx[m] = home.gx[m]; gy[m] = home.gy[m]; gdir[m] = [1, 0]; }
+      dir = [-1, 0]; want = [-1, 0];
+    }
+    function die(){
+      lives--;
+      paintScore();
+      if(lives <= 0){
+        over = true;
+        setState("GAME OVER · PRESS R TO PLAY AGAIN");
+      } else {
+        dead = 90;
+        setState("OUCH · " + lives + (lives === 1 ? " LIFE" : " LIVES") + " LEFT");
+      }
+    }
+    document.addEventListener("keydown", function(e){
+      var k = e.key, handled = true;
+      if(k === "ArrowLeft" || k === "a" || k === "A") want = [-1, 0];
+      else if(k === "ArrowRight" || k === "d" || k === "D") want = [1, 0];
+      else if(k === "ArrowUp" || k === "w" || k === "W") want = [0, -1];
+      else if(k === "ArrowDown" || k === "s" || k === "S") want = [0, 1];
+      else if(k === "p" || k === "P"){ paused = !paused; setState(paused ? "PAUSED · PRESS P" : (auto ? "ATTRACT · PRESS ARROWS" : "PLAYING")); }
+      else if(k === "r" || k === "R"){ if(over){ over = false; lives = 3; score = 0; fright = 0; scan(); resetPositions(); paintScore(); setState(auto ? "ATTRACT · PRESS ARROWS" : "PLAYING"); } }
+      else handled = false;
+      if(handled){
+        if(k !== "p" && k !== "P" && k !== "r" && k !== "R"){ auto = false; if(!over && !paused) setState("PLAYING"); }
+        if(["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"," "].indexOf(k) !== -1 && MC.getBoundingClientRect().top < window.innerHeight && MC.getBoundingClientRect().bottom > 0){ e.preventDefault(); }
+      }
+    });
+    var sx = 0, sy = 0;
+    MC.addEventListener("touchstart", function(e){ var t = e.changedTouches[0]; sx = t.clientX; sy = t.clientY; }, {passive:true});
+    MC.addEventListener("touchend", function(e){
+      var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+      if(Math.abs(dx) < 12 && Math.abs(dy) < 12){
+        paused = !paused;
+        setState(paused ? "PAUSED · TAP TO PLAY" : "PLAYING");
+        auto = false;
+        return;
+      }
+      want = Math.abs(dx) > Math.abs(dy) ? [(dx > 0 ? 1 : -1), 0] : [0, (dy > 0 ? 1 : -1)];
+      auto = false;
+      if(!over && !paused) setState("PLAYING");
+    }, {passive:true});
+    if(auto) setState(touch ? "ATTRACT · TAP TO PLAY" : "ATTRACT · PRESS ARROWS");
+    var SPEED = 7.5, GSPEED = 5.2;
+    function step(dt){
+      if(over || paused) return;
+      var steppx = fx;
+      if(dead > 0){
+        dead -= dt * 60;
+        if(dead <= 0){ dead = 0; resetPositions(); if(!over) setState(auto ? "ATTRACT · PRESS ARROWS" : "PLAYING"); }
+        return;
+      }
+      if(want[0] !== dir[0] || want[1] !== dir[1]){
+        var nx = Math.round(fx + want[0] * 0.5), ny = Math.round(fy + want[1] * 0.5);
+        if(can(Math.round(fx), Math.round(fy)) && can(nx, ny)){ dir = [want[0], want[1]]; }
+        else if(can(px + want[0], py + want[1])){ dir = [want[0], want[1]]; }
+      }
+      if(auto){
+        var cx = Math.round(fx), cy = Math.round(fy);
+        var near = Math.abs(fx - cx) + Math.abs(fy - cy) < 0.15;
+        if(near){
+          var opts = [[1,0],[-1,0],[0,1],[0,-1]].filter(function(o){ return can(cx + o[0], cy + o[1]); });
+          var rev = [-dir[0], -dir[1]];
+          var cand = opts.filter(function(o){ return !(o[0] === rev[0] && o[1] === rev[1]); });
+          if(!cand.length) cand = opts;
+          var bestO = null, bestS = -1;
+          for(var ci = 0; ci < cand.length; ci++){
+            var o = cand[ci], sc = 0, xw = cx, yw = cy;
+            if(o[0] === dir[0] && o[1] === dir[1]) sc += 0.5;
+            for(var k = 1; k <= 8; k++){
+              xw += o[0]; yw += o[1];
+              if(!can(xw, yw)) break;
+              sc += dotAt(xw, yw) ? (9 - k) : 0;
+              sc += bigAt(xw, yw) ? (20 - k) : 0;
+            }
+            if(sc > bestS){ bestS = sc; bestO = o; }
+          }
+          if(bestO){ dir = [bestO[0], bestO[1]]; want = [dir[0], dir[1]]; }
+        }
+      }
+      var stepx = dir[0] * SPEED * dt, stepy = dir[1] * SPEED * dt;
+      var tx = fx + stepx, ty = fy + stepy;
+      if(dir[0] !== 0){
+        var laneY = Math.round(fy);
+        ty = laneY + (fy - laneY) * 0.6;
+        var edge = dir[0] > 0 ? Math.floor(tx + 0.4) : Math.ceil(tx - 0.4);
+        if(!can(edge, laneY)){ tx = dir[0] > 0 ? edge - 1 + 0.4 : edge + 1 - 0.4; }
+        if(!can(Math.round(tx), laneY)){ tx = fx; }
+      } else if(dir[1] !== 0){
+        var laneX = Math.round(fx);
+        tx = laneX + (fx - laneX) * 0.6;
+        var edgey = dir[1] > 0 ? Math.floor(ty + 0.4) : Math.ceil(ty - 0.4);
+        if(!can(laneX, edgey)){ ty = dir[1] > 0 ? edgey - 1 + 0.4 : edgey + 1 - 0.4; }
+        if(!can(laneX, Math.round(ty))){ ty = fy; }
+      }
+      if(tx < -0.6) tx = GW - 1 + 0.6; else if(tx > GW - 1 + 0.6) tx = -0.6;
+      fx = Math.max(-0.6, Math.min(GW - 1 + 0.6, tx));
+      fy = Math.max(0, Math.min(GH - 1, ty));
+      var ncx = Math.round(fx), ncy = Math.round(fy);
+      if(Math.abs(fx - ncx) < 0.2 && Math.abs(fy - ncy) < 0.2 && ncx >= 0 && ncx < GW){ px = ncx; py = ncy; }
+      if(auto && steppx === fx){ fx = Math.round(fx); fy = Math.round(fy); }
+      for(var i = dots.length - 1; i >= 0; i--){
+        if(dots[i][0] === px && dots[i][1] === py){ dots.splice(i, 1); score += 10; break; }
+      }
+      for(var j = big.length - 1; j >= 0; j--){
+        if(big[j][0] === px && big[j][1] === py){ big.splice(j, 1); score += 50; fright = 420; if(!over) setState("POWER · HUNT THEM"); break; }
+      }
+      if(fright > 0) fright--;
+      if(dots.length === 0 && big.length === 0){ scan(); resetPositions(); if(!touch) setState("MAZE CLEAR · REFILLED"); }
+      for(var m = 0; m < gx.length; m++){
+        var pcx = Math.round(gx[m]), pcy = Math.round(gy[m]);
+        var cur = gdir[m] || [1, 0];
+        var chase = fright <= 0 && Math.random() > 0.4;
+        var mv = [[1,0],[-1,0],[0,1],[0,-1]].filter(function(o){ return gcan(pcx + o[0], pcy + o[1]); });
+        var best2 = null, bestD = chase ? 1e9 : -1e9;
+        for(var o = 0; o < mv.length; o++){
+          var ddx = (pcx + mv[o][0]) - fx, ddy = (pcy + mv[o][1]) - fy;
+          var dd = ddx * ddx + ddy * ddy;
+          if((chase && dd < bestD) || (!chase && dd > bestD)){ bestD = dd; best2 = mv[o]; }
+        }
+        var keep = mv.filter(function(o){ return o[0] === cur[0] && o[1] === cur[1]; });
+        var mvx = (keep.length && Math.random() > 0.3) ? keep[0] : ((best2 && Math.random() > 0.3) ? best2 : mv[Math.floor(Math.random() * mv.length)]);
+        if(mvx){
+          gdir[m] = mvx;
+          var gm = Math.min(1, GSPEED * dt);
+          var ngx = gx[m] + mvx[0] * gm, ngy = gy[m] + mvx[1] * gm;
+          if(gcan(Math.round(ngx), Math.round(ngy))){ gx[m] = ngx; gy[m] = ngy; }
+          else { gx[m] = pcx; gy[m] = pcy; }
+        }
+        var hit = Math.abs(gx[m] - fx) < 0.55 && Math.abs(gy[m] - fy) < 0.55;
+        if(hit){
+          if(fright > 0){ score += 200; gx[m] = home.gx[m]; gy[m] = home.gy[m]; }
+          else if(dead === 0 && !over && !auto){ die(); break; }
+        }
+      }
+      mouth += dt * 10;
+      paintScore();
+    }
+    var TAU = Math.PI * 2;
+    function draw(ts){
+      var cw = MW / GW, chh = MH / GH;
+      g.fillStyle = "#050512";
+      g.fillRect(0, 0, MW, MH);
+      g.lineCap = "round";
+      g.lineWidth = Math.max(2, Math.min(cw, chh) * 0.14);
+      g.strokeStyle = "#42e8ff";
+      g.beginPath();
+      for(var yy = 0; yy < GH; yy++) for(var xx = 0; xx < GW; xx++){
+        if(GRID[yy][xx] !== "#") continue;
+        if((xx === 0 && GRID[yy][1] === "T") || (xx === GW - 1 && GRID[yy][GW - 2] === "T")) continue;
+        var wU = yy > 0 && GRID[yy-1][xx] === "#", wD = yy < GH-1 && GRID[yy+1][xx] === "#";
+        var wL = xx > 0 && GRID[yy][xx-1] === "#", wR = xx < GW-1 && GRID[yy][xx+1] === "#";
+        var ex = xx * cw, ey = yy * chh, pad = Math.min(cw, chh) * 0.22;
+        var x0 = ex + pad, x1 = ex + cw - pad, ym = ey + chh / 2;
+        var y0 = ey + pad, y1 = ey + chh - pad, xm = ex + cw / 2;
+        if(wU && wD && !wL && !wR){ g.moveTo(xm, y0); g.lineTo(xm, y1); }
+        else if(!wU && !wD && wL && wR){ g.moveTo(x0, ym); g.lineTo(x1, ym); }
+        else {
+          if(!wU){ g.moveTo(x0, y0); g.lineTo(x1, y0); }
+          if(!wD){ g.moveTo(x0, y1); g.lineTo(x1, y1); }
+          if(!wL){ g.moveTo(x0, y0); g.lineTo(x0, y1); }
+          if(!wR){ g.moveTo(x1, y0); g.lineTo(x1, y1); }
+          if((wU !== wD) && (wL !== wR)){
+            var cx = wL ? x0 : x1, cy = wU ? y0 : y1;
+            g.moveTo(cx, cy);
+            g.arc(cx, cy, 0.1, 0, TAU);
+          }
+        }
+      }
+      g.stroke();
+      g.fillStyle = "#ffe600";
+      for(var i = 0; i < dots.length; i++){
+        var dc = center(dots[i][0], dots[i][1], cw, chh);
+        g.beginPath(); g.arc(dc[0], dc[1], Math.max(1.4, cw * 0.09), 0, TAU); g.fill();
+      }
+      var pulse = 3 + Math.sin(ts / 260) * 1.2;
+      for(var j = 0; j < big.length; j++){
+        var bc = center(big[j][0], big[j][1], cw, chh);
+        g.beginPath(); g.arc(bc[0], bc[1], Math.max(3, cw * 0.2) + pulse * 0.4, 0, TAU); g.fill();
+      }
+      var gcols = ["#ff5d5d", "#8b7cff", "#4ade9e"];
+      var gshow = fright > 0 ? ["#2b4bff", "#2b4bff", "#2b4bff"] : gcols;
+      for(var m = 0; m < gx.length; m++){
+        var gc = center(Math.round(gx[m] * 4) / 4, Math.round(gy[m] * 4) / 4, cw, chh), gr = Math.min(cw, chh) * 0.42;
+        g.fillStyle = gshow[m % 3];
+        g.beginPath();
+        g.arc(gc[0], gc[1] - gr * 0.2, gr * 0.8, Math.PI, 0);
+        g.lineTo(gc[0] + gr * 0.8, gc[1] + gr * 0.6);
+        g.lineTo(gc[0] + gr * 0.4, gc[1] + gr * 0.3);
+        g.lineTo(gc[0], gc[1] + gr * 0.6);
+        g.lineTo(gc[0] - gr * 0.4, gc[1] + gr * 0.3);
+        g.lineTo(gc[0] - gr * 0.8, gc[1] + gr * 0.6);
+        g.closePath(); g.fill();
+        g.fillStyle = "#fff";
+        g.beginPath(); g.arc(gc[0] - gr * 0.3, gc[1] - gr * 0.25, gr * 0.22, 0, TAU); g.fill();
+        g.beginPath(); g.arc(gc[0] + gr * 0.3, gc[1] - gr * 0.25, gr * 0.22, 0, TAU); g.fill();
+        g.fillStyle = "#164e63";
+        g.beginPath(); g.arc(gc[0] - gr * 0.3, gc[1] - gr * 0.25, gr * 0.11, 0, TAU); g.fill();
+        g.beginPath(); g.arc(gc[0] + gr * 0.3, gc[1] - gr * 0.25, gr * 0.11, 0, TAU); g.fill();
+      }
+      var pcx = Math.round((fx * cw + cw / 2) * 2) / 2, pcy = Math.round((fy * chh + chh / 2) * 2) / 2, pr = Math.min(cw, chh) * 0.85;
+      var ang = dir[0] === 1 ? 0 : dir[0] === -1 ? Math.PI : dir[1] === 1 ? Math.PI / 2 : -Math.PI / 2;
+      var open = reduce ? 0.15 : 0.12 + 0.22 * Math.abs(Math.sin(mouth));
+      var halo = g.createRadialGradient(pcx, pcy, pr * 0.4, pcx, pcy, pr * 2.1);
+      halo.addColorStop(0, "rgba(255,230,0,.30)"); halo.addColorStop(1, "rgba(255,230,0,0)");
+      g.fillStyle = halo;
+      g.beginPath(); g.arc(pcx, pcy, pr * 2.1, 0, TAU); g.fill();
+      g.fillStyle = "#ffe600";
+      g.beginPath();
+      g.moveTo(pcx, pcy);
+      g.arc(pcx, pcy, pr, ang + open, ang + Math.PI * 2 - open);
+      g.closePath(); g.fill();
+      g.fillStyle = "#070714";
+      g.beginPath(); g.arc(pcx + Math.cos(ang - 1.1) * pr * 0.35, pcy + Math.sin(ang - 1.1) * pr * 0.35, pr * 0.13, 0, TAU); g.fill();
+      if(over){
+        g.fillStyle = "rgba(5,5,18,.78)";
+        g.fillRect(0, 0, MW, MH);
+        g.fillStyle = "#ffe600";
+        g.font = "700 22px 'Bricolage Grotesque','Outfit',sans-serif";
+        g.textAlign = "center";
+        g.fillText("GAME OVER", MW / 2, MH / 2 - 8);
+        g.fillStyle = "#f0edf7";
+        g.font = "500 13px 'JetBrains Mono',monospace";
+        g.fillText("score " + score + " · best " + Math.max(best, score), MW / 2, MH / 2 + 16);
+        g.fillStyle = "#42e8ff";
+        g.fillText("press R to play again", MW / 2, MH / 2 + 38);
+      } else if(paused){
+        g.fillStyle = "rgba(5,5,18,.66)";
+        g.fillRect(0, 0, MW, MH);
+        g.fillStyle = "#f0edf7";
+        g.font = "700 20px 'Bricolage Grotesque','Outfit',sans-serif";
+        g.textAlign = "center";
+        g.fillText("PAUSED", MW / 2, MH / 2 + 7);
+      }
+    }
+    var last = 0, seen = true;
+    function frame(ts){
+      requestAnimationFrame(frame);
+      if(!seen) return;
+      if(!last) last = ts;
+      var dt = Math.min(0.05, ((ts || 0) - last) / 1000);
+      last = ts;
+      step(dt || 0.016);
+      draw(ts || 0);
+    }
+    if(reduce){ draw(0); if(stateEl) stateEl.textContent = "STATIC PREVIEW"; }
+    else{
+      if("IntersectionObserver" in window){
+        new IntersectionObserver(function(es){ seen = es[0].isIntersecting; }).observe(MC);
+      }
+      requestAnimationFrame(frame);
+    }
+  }
+})();
+</script>
+</body>
+</html>
